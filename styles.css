@@ -1,0 +1,555 @@
+/* 中国风样式增强 */
+
+/* 1. 卷轴效果 */
+.scroll-container {
+    position: relative;
+    padding: 20px 40px;
+    background: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L20 0 L20 20 L0 20 Z" fill="%23F9F5ED"/><path d="M0 0 L20 0 L20 4 L0 4 Z" fill="%23D6C0A8"/><path d="M0 16 L20 16 L20 20 L0 20 Z" fill="%23D6C0A8"/></svg>') repeat-y;
+}
+
+.scroll-top, .scroll-bottom {
+    height: 30px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="100" height="30" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg"><path d="M0 30 Q50 0 100 30" fill="%23D6C0A8"/></svg>');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.scroll-bottom {
+    transform: rotate(180deg);
+}
+
+/* 2. 水墨画效果边框 */
+.ink-border-enhanced {
+    position: relative;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.ink-border-enhanced::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid #90725C;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: -1;
+    background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 Q25 50 0 100 M100 0 Q75 50 100 100" stroke="%2390725C" stroke-width="1" fill="none" stroke-opacity="0.2"/></svg>');
+}
+
+/* 3. 中国传统色彩 */
+.color-red {
+    color: #A62424;
+}
+
+.color-blue {
+    color: #4A6FA5;
+}
+
+.color-green {
+    color: #5C8940;
+}
+
+.color-yellow {
+    color: #D4A017;
+}
+
+.color-purple {
+    color: #783F8E;
+}
+
+/* 4. 古典图案背景 */
+.pattern-cloud {
+    background-image: url('data:image/svg+xml;utf8,<svg width="100" height="50" viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg"><path d="M10,30 Q20,10 35,20 Q50,5 70,20 Q85,10 90,30 Q100,40 90,45 Q80,50 70,45 Q60,50 50,45 Q40,50 30,45 Q20,50 10,45 Q0,40 10,30 Z" fill="%23D6C0A8" fill-opacity="0.1"/></svg>');
+    background-repeat: repeat;
+}
+
+.pattern-wave {
+    background-image: url('data:image/svg+xml;utf8,<svg width="100" height="20" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M0,10 Q25,20 50,10 T100,10" stroke="%2390725C" stroke-width="1" fill="none" stroke-opacity="0.2"/></svg>');
+    background-repeat: repeat-x;
+}
+
+.pattern-flower {
+    background-image: url('data:image/svg+xml;utf8,<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><circle cx="25" cy="25" r="3" fill="%2390725C" fill-opacity="0.5"/><path d="M25,15 Q30,10 35,15 T45,25 T35,35 T25,45 T15,35 T5,25 T15,15 T25,15 Z" stroke="%2390725C" stroke-width="1" fill="none" stroke-opacity="0.3"/></svg>');
+    background-repeat: repeat;
+}
+
+/* 5. 灯笼效果 */
+.lantern {
+    position: relative;
+    width: 60px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.lantern-body {
+    width: 60px;
+    height: 80px;
+    background: linear-gradient(90deg, #A62424, #D46262, #A62424);
+    border-radius: 50% 50% 40% 40%;
+    position: relative;
+    box-shadow: 0 0 15px rgba(212, 98, 98, 0.8);
+}
+
+.lantern-body::before, .lantern-body::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background: rgba(101, 13, 13, 0.3);
+    left: 0;
+}
+
+.lantern-body::before {
+    top: 25px;
+}
+
+.lantern-body::after {
+    top: 50px;
+}
+
+.lantern-top {
+    width: 30px;
+    height: 20px;
+    background: #7D5A3F;
+    position: absolute;
+    top: -15px;
+    left: 15px;
+    border-radius: 10px 10px 0 0;
+}
+
+.lantern-bottom {
+    width: 40px;
+    height: 10px;
+    background: #7D5A3F;
+    position: absolute;
+    bottom: -5px;
+    left: 10px;
+    border-radius: 0 0 5px 5px;
+}
+
+.lantern-light {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #FFD700;
+    border-radius: 50%;
+    bottom: 20px;
+    left: 25px;
+    box-shadow: 0 0 10px #FFD700;
+    animation: lantern-flicker 2s infinite alternate;
+}
+
+@keyframes lantern-flicker {
+    0% { opacity: 0.7; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* 6. 中国结装饰 */
+.chinese-knot {
+    width: 40px;
+    height: 60px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.knot-top {
+    width: 40px;
+    height: 30px;
+    background: #A62424;
+    border-radius: 50% 50% 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.knot-top::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    top: 5px;
+    left: 10px;
+}
+
+.knot-middle {
+    width: 40px;
+    height: 10px;
+    background: #A62424;
+    position: relative;
+}
+
+.knot-bottom {
+    width: 40px;
+    height: 20px;
+    background: #A62424;
+    border-radius: 0 0 20px 20px;
+    position: relative;
+}
+
+.knot-tassel {
+    width: 2px;
+    height: 15px;
+    background: #D4A017;
+    position: absolute;
+    bottom: -15px;
+    left: 19px;
+}
+
+/* 7. 水墨效果按钮 */
+.ink-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.ink-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.ink-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* 8. 古风标题装饰 */
+.ancient-title {
+    position: relative;
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.ancient-title::before, .ancient-title::after {
+    content: '❖';
+    color: #90725C;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.ancient-title::before {
+    left: -5px;
+}
+
+.ancient-title::after {
+    right: -5px;
+}
+
+/* 9. 中国风滚动条 */
+.chinese-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chinese-scrollbar::-webkit-scrollbar-track {
+    background: #F9F5ED;
+    border-radius: 4px;
+}
+
+.chinese-scrollbar::-webkit-scrollbar-thumb {
+    background: #90725C;
+    border-radius: 4px;
+    border: 2px solid #F9F5ED;
+}
+
+.chinese-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #7D5A3F;
+}
+
+/* 10. 古典纸质感 */
+.paper-texture {
+    background-color: #F9F5ED;
+    background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23F9F5ED"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23D6C0A8" stroke-width="0.5" fill="none" stroke-opacity="0.1"/></svg>');
+}
+
+/* 11. 山水意境背景 */
+.landscape-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.landscape-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg width="300" height="100" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg"><path d="M0,100 L50,50 Q75,30 100,60 T200,30 T300,70 L300,100 Z" fill="%2390725C" fill-opacity="0.05"/><path d="M0,100 L30,70 Q60,50 90,80 T180,50 T270,90 L300,100 Z" fill="%237D8C5B" fill-opacity="0.05"/></svg>');
+    background-repeat: repeat-x;
+    background-position: bottom;
+    z-index: -1;
+}
+
+/* 12. 动态水墨扩散效果 */
+@keyframes ink-spread {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(10); opacity: 0; }
+}
+
+.ink-spread {
+    position: fixed;
+    border-radius: 50%;
+    background: rgba(144, 114, 92, 0.1);
+    pointer-events: none;
+    transform-origin: center;
+    animation: ink-spread 1s ease-out forwards;
+}
+
+/* 13. 食物分类图标样式 */
+.category-staple {
+    color: #A62424;
+}
+
+.category-snack {
+    color: #D4A017;
+}
+
+.category-fruit {
+    color: #5C8940;
+}
+
+.category-drink {
+    color: #4A6FA5;
+}
+
+.category-other {
+    color: #783F8E;
+}
+
+/* 14. 增强版抽签结果动画 */
+@keyframes draw-reveal {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) rotate(0deg);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translateY(-10px) rotate(5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+.enhanced-reveal {
+    animation: draw-reveal 0.8s ease-out forwards;
+}
+
+/* 15. 季节性主题色彩 */
+.season-spring {
+    --season-primary: #5C8940;
+    --season-secondary: #AED581;
+    --season-accent: #FDD835;
+}
+
+.season-summer {
+    --season-primary: #4A6FA5;
+    --season-secondary: #90CAF9;
+    --season-accent: #FF8A65;
+}
+
+.season-autumn {
+    --season-primary: #D4A017;
+    --season-secondary: #FFCC80;
+    --season-accent: #E57373;
+}
+
+.season-winter {
+    --season-primary: #78909C;
+    --season-secondary: #B0BEC5;
+    --season-accent: #B39DDB;
+}
+
+/* 16. 菜单高亮效果 */
+.menu-item-active {
+    position: relative;
+    transform: translateY(-3px);
+}
+
+.menu-item-active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    background: #FDD835;
+    border-radius: 1px;
+}
+
+/* 17. 古典边框装饰 */
+.classic-border {
+    position: relative;
+}
+
+.classic-border::before, .classic-border::after, .classic-border > div::before, .classic-border > div::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: #90725C;
+    border-style: solid;
+    opacity: 0.7;
+}
+
+.classic-border::before {
+    top: 0;
+    left: 0;
+    border-width: 2px 0 0 2px;
+}
+
+.classic-border::after {
+    top: 0;
+    right: 0;
+    border-width: 2px 2px 0 0;
+}
+
+.classic-border > div::before {
+    bottom: 0;
+    left: 0;
+    border-width: 0 0 2px 2px;
+}
+
+.classic-border > div::after {
+    bottom: 0;
+    right: 0;
+    border-width: 0 2px 2px 0;
+}
+
+/* 18. 中国风加载动画 */
+@keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 增强版转盘动画 */
+@keyframes turntable-spin {
+    0% {
+        transform: rotate(0deg);
+        filter: brightness(1);
+    }
+    50% {
+        transform: rotate(1800deg);
+        filter: brightness(1.1);
+    }
+    100% {
+        transform: rotate(3600deg);
+        filter: brightness(1);
+    }
+}
+
+.turntable-spin {
+    animation: turntable-spin 4s cubic-bezier(0.1, 0.8, 0.1, 1) forwards;
+}
+
+.chinese-loading {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #D6C0A8;
+    border-top-color: #90725C;
+    border-radius: 50%;
+    animation: spin-slow 1s linear infinite;
+    position: relative;
+}
+
+.chinese-loading::before {
+    content: '●';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #90725C;
+    font-size: 12px;
+}
+
+/* 19. 中国风通知弹窗 */
+.chinese-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    background: #F9F5ED;
+    border: 1px solid #D6C0A8;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(144, 114, 92, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.chinese-notification.show {
+    transform: translateX(0);
+}
+
+.chinese-notification::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #90725C;
+}
+
+/* 20. 优化移动设备触摸效果 */
+.touch-feedback {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.touch-feedback:active {
+    transform: scale(0.95);
+}
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+    .scroll-container {
+        padding: 15px 20px;
+    }
+    
+    .lantern {
+        width: 40px;
+        height: 60px;
+    }
+    
+    .lantern-body {
+        width: 40px;
+        height: 60px;
+    }
+    
+    .lantern-top {
+        width: 20px;
+        height: 15px;
+        left: 10px;
+    }
+    
+    .lantern-bottom {
+        width: 30px;
+        height: 8px;
+        left: 5px;
+    }
+    
+    .ancient-title {
+        padding: 0 15px;
+    }
+    
+    .chinese-notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}

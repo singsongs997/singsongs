@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我要吃饭 - 食品抽签应用</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 引入Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 引入Google Fonts - 选择有书法感的字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <!-- Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#90725C',
+                        secondary: '#D6C0A8',
+                        accent: '#7D8C5B',
+                        background: '#F9F5ED',
+                        text: '#5C4E3D'
+                    },
+                    fontFamily: {
+                        'calligraphy': ['"Ma Shan Zheng"', 'cursive'],
+                        'chinese': ['"ZCOOL XiaoWei"', 'serif']
+                    },
+                },
+            }
+        }
+    </script>
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .bg-pattern {
+                background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 25C55 25 60 20 65 25C70 30 70 35 65 40C60 45 55 45 50 40C45 35 45 30 50 25Z" fill="%23D6C0A8" fill-opacity="0.2"/></svg>');
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        }
+    </style>
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- 页面特定样式 -->
+    <style>
+        body {
+            background-color: #F9F5ED;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 25C55 25 60 20 65 25C70 30 70 35 65 40C60 45 55 45 50 40C45 35 45 30 50 25Z" fill="%23D6C0A8" fill-opacity="0.2"/></svg>');
+        }
+        
+        /* 确保所有可点击元素都有触摸反馈 */
+        button, .menu-item, .dish-card, .icon-option {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        button:active, .menu-item:active, .dish-card:active, .icon-option:active {
+            transform: scale(0.95);
+        }
+        
+        /* 隐藏number输入框的上下箭头 */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        
+        /* 改善选择框的默认样式 */
+        select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2390725C"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+        }
+    </style>
+</head>
+<body class="font-chinese text-text min-h-screen flex flex-col">
+    <!-- 头部 -->
+    <header class="py-4 px-6 text-center ink-border-enhanced landscape-bg">
+        <h1 class="text-[clamp(2rem,6vw,3.5rem)] font-calligraphy text-primary mb-2">我要吃饭</h1>
+        <p class="text-lg text-accent">选择美食，品味生活</p>
+    </header>
+    
+    <!-- 主内容区 -->
+    <main class="flex-grow p-4 container mx-auto">
+        <!-- 导航菜单 -->
+        <nav class="flex justify-around mb-8 bg-secondary/30 rounded-lg p-2 ink-border-enhanced paper-texture">
+            <button id="nav-draw" class="menu-item flex-1 py-3 px-4 rounded-md bg-primary text-white font-chinese text-lg menu-item-active ink-button">
+                <i class="fa fa-random mr-2"></i>抽签
+            </button>
+            <button id="nav-manage" class="menu-item flex-1 py-3 px-4 rounded-md bg-background/70 text-primary font-chinese text-lg ink-button">
+                <i class="fa fa-cutlery mr-2"></i>食品管理
+            </button>
+            <button id="nav-history" class="menu-item flex-1 py-3 px-4 rounded-md bg-background/70 text-primary font-chinese text-lg ink-button">
+                <i class="fa fa-history mr-2"></i>历史记录
+            </button>
+            <button id="nav-stats" class="menu-item flex-1 py-3 px-4 rounded-md bg-background/70 text-primary font-chinese text-lg ink-button">
+                <i class="fa fa-bar-chart mr-2"></i>统计分析
+            </button>
+        </nav>
+        
+        <!-- 抽签页面 -->
+        <section id="draw-page" class="space-y-6">
+            <!-- 抽取数量设置 -->
+            <div class="bg-white/80 rounded-lg p-4 ink-border-enhanced">
+                <h2 class="text-xl font-chinese text-primary mb-3 ancient-title">抽取设置</h2>
+                <div class="flex items-center space-x-4">
+                    <label for="draw-count" class="font-chinese">抽取数量：</label>
+                    <input type="range" id="draw-count" min="1" max="5" value="1" class="w-40 accent-primary">
+                    <span id="draw-count-value" class="font-calligraphy text-2xl text-accent">1</span>
+                </div>
+            </div>
+            
+            <!-- 抽签区域 -->
+            <div class="flex flex-col items-center">
+                <div id="turntable" class="relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-white shadow-lg ink-border-enhanced overflow-hidden mb-6">
+                    <!-- 转盘中心指示器 -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-primary flex items-center justify-center z-10">
+                        <div class="w-8 h-8 rounded-full bg-white"></div>
+                    </div>
+                    
+                    <!-- 转盘分区 -->
+                    <div class="absolute inset-0 flex items-center justify-center" id="turntable-content">
+                        <div class="text-center">
+                            <i class="fa fa-cutlery text-5xl text-primary mb-2"></i>
+                            <p class="font-chinese text-xl">点击开始</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 转盘指针 -->
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/4 z-20">
+                        <svg width="40" height="30" viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 0L0 30H40L20 0Z" fill="#90725C"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- 抽签按钮 -->
+                <button id="draw-button" class="px-12 py-4 bg-accent text-white rounded-full font-calligraphy text-2xl hover:bg-accent/80 transition-colors shadow-md ink-button">
+                    开始抽签
+                </button>
+            </div>
+            
+            <!-- 抽签结果 -->
+            <div id="draw-result" class="hidden">
+                <h2 class="text-xl font-chinese text-primary mb-3 text-center ancient-title">抽签结果</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="result-container"></div>
+            </div>
+        </section>
+        
+        <!-- 食品管理页面 -->
+        <section id="manage-page" class="hidden space-y-6">
+            <!-- 添加食品 -->
+            <div class="bg-white/80 rounded-lg p-4 ink-border-enhanced">
+                <h2 class="text-xl font-chinese text-primary mb-3 ancient-title">添加食品</h2>
+                <div class="space-y-3">
+                    <div>
+                        <label for="food-name" class="block font-chinese mb-1">食品名称：</label>
+                        <input type="text" id="food-name" class="w-full px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label for="food-category" class="block font-chinese mb-1">分类：</label>
+                        <select id="food-category" class="w-full px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="主食">主食</option>
+                            <option value="小吃">小吃</option>
+                            <option value="水果">水果</option>
+                            <option value="饮料">饮料</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="food-icon" class="block font-chinese mb-1">选择图标：</label>
+                        <div class="flex flex-wrap gap-2" id="icon-selector">
+                            <div class="icon-option cursor-pointer p-2 border-2 border-secondary rounded-md" data-icon="fa-cutlery"><i class="fa fa-cutlery text-2xl text-primary"></i></div>
+                            <div class="icon-option cursor-pointer p-2 border-2 border-secondary rounded-md" data-icon="fa-coffee"><i class="fa fa-coffee text-2xl text-primary"></i></div>
+                            <div class="icon-option cursor-pointer p-2 border-2 border-secondary rounded-md" data-icon="fa-lemon-o"><i class="fa fa-lemon-o text-2xl text-primary"></i></div>
+                            <div class="icon-option cursor-pointer p-2 border-2 border-secondary rounded-md" data-icon="fa-birthday-cake"><i class="fa fa-birthday-cake text-2xl text-primary"></i></div>
+                            <div class="icon-option cursor-pointer p-2 border-2 border-secondary rounded-md" data-icon="fa-glass"><i class="fa fa-glass text-2xl text-primary"></i></div>
+                            <div class="icon-option cursor-pointer p-2 border-2 border-secondary rounded-md" data-icon="fa-apple"><i class="fa fa-apple text-2xl text-primary"></i></div>
+                            <div class="icon-option cursor-pointer p-2 border-2 border-secondary rounded-md" data-icon="fa-leaf"><i class="fa fa-leaf text-2xl text-primary"></i></div>
+                            <div class="icon-option cursor-pointer p-2 border-2 border-secondary rounded-md" data-icon="fa-heart"><i class="fa fa-heart text-2xl text-primary"></i></div>
+                        </div>
+                        <input type="hidden" id="selected-icon" value="fa-cutlery">
+                    </div>
+                    <button id="add-food-button" class="w-full py-2 bg-primary text-white rounded-md hover:bg-primary/80 transition-colors ink-button">
+                        添加食品
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 食品列表 -->
+            <div class="bg-white/80 rounded-lg p-4 ink-border-enhanced">
+                <h2 class="text-xl font-chinese text-primary mb-3 ancient-title">食品列表</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="food-list"></div>
+            </div>
+        </section>
+        
+        <!-- 历史记录页面 -->
+        <section id="history-page" class="hidden space-y-6">
+            <!-- 筛选选项 -->
+            <div class="bg-white/80 rounded-lg p-4 ink-border-enhanced">
+                <h2 class="text-xl font-chinese text-primary mb-3 ancient-title">筛选</h2>
+                <div class="flex flex-wrap gap-3">
+                    <select id="history-category-filter" class="px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                        <option value="all">所有分类</option>
+                        <option value="主食">主食</option>
+                        <option value="小吃">小吃</option>
+                        <option value="水果">水果</option>
+                        <option value="饮料">饮料</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <button id="clear-history" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors ink-button">
+                        清空历史
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 历史记录列表 -->
+            <div class="bg-white/80 rounded-lg p-4 ink-border-enhanced">
+                <h2 class="text-xl font-chinese text-primary mb-3 ancient-title">抽签历史</h2>
+                <div class="space-y-3 max-h-[500px] overflow-y-auto chinese-scrollbar" id="history-list">
+                    <!-- 历史记录项会动态添加到这里 -->
+                </div>
+                <p id="no-history" class="text-center text-gray-500 py-8 hidden">暂无历史记录</p>
+            </div>
+        </section>
+        
+        <!-- 统计分析页面 -->
+        <section id="stats-page" class="hidden space-y-6">
+            <!-- 统计图表 -->
+            <div class="bg-white/80 rounded-lg p-4 ink-border-enhanced">
+                <h2 class="text-xl font-chinese text-primary mb-3 ancient-title">被抽中频率</h2>
+                <div class="w-full h-64">
+                    <canvas id="stats-chart"></canvas>
+                </div>
+            </div>
+            
+            <!-- 详细统计 -->
+            <div class="bg-white/80 rounded-lg p-4 ink-border-enhanced">
+                <h2 class="text-xl font-chinese text-primary mb-3 ancient-title">详细统计</h2>
+                <div class="space-y-3 max-h-[400px] overflow-y-auto chinese-scrollbar" id="stats-detail">
+                    <!-- 详细统计会动态添加到这里 -->
+                </div>
+                <p id="no-stats" class="text-center text-gray-500 py-8 hidden">暂无统计数据</p>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 底部 -->
+    <footer class="py-4 px-6 text-center text-text/70 border-t border-secondary/30">
+        <p class="font-chinese">我要吃饭 - 让选择不再困难</p>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
